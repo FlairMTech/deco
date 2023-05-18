@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Data = require('./dataSchema'); 
+const cors = require("cors");
 // Connect to MongoDB
 
 // MongoDB connection
@@ -16,8 +17,8 @@ mongoose.connect('mongodb+srv://ansariamaan854:Amaan_123@cluster0.otm7zmp.mongod
  
 
   app.use(express.json());
-
-
+app.use(cors());
+const PORT = process.env.PORT || 5000;
 // Endpoint to save the data
 app.post('/data', async (req, res) => {
   const data = req.body;
@@ -76,6 +77,6 @@ app.delete('/api/data', (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
