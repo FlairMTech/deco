@@ -62,7 +62,22 @@ app.get('/data/:id', (req, res) => {
       res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
     });
 });
+// define a route to get all data
+app.get('/data', (req, res) => {
 
+  Data.find()
+    .then((data) => {
+      if (!data) {
+        return res.status(404).json({ message: 'Data not found' });
+      }
+
+      res.json(data);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
+    });
+});
 //delete all the entry
 app.delete('/api/data', (req, res) => {
   Data.deleteMany({})
