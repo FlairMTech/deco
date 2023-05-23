@@ -19,7 +19,8 @@ const categorySchema = new mongoose.Schema({
           width: Number,
           unitPrice: Number,
           totalSqft: Number,
-          totalPrice: Number
+          totalPrice: Number,
+          categoryKey: String,
         }
       ]
     }
