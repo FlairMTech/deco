@@ -62,6 +62,37 @@ app.get('/data/:id', (req, res) => {
       res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
     });
 });
+
+//Defined a route to get specific  data's subData
+app.get('/data/:id/:category', (req, res) => {
+  const id = req.params.id;
+  const category = req.params.category;
+
+  // Find the Data document by uniqueId
+  Data.findOne({ uniqueId: id })
+    .then((data) => {
+      if (!data) {
+        return res.status(404).json({ message: 'Data not found' });
+      }
+
+      // Find the item with the specified category
+      const item = data.items.find((item) => item.category === category);
+
+      if (!item) {
+        return res.status(404).json({ message: 'Category not found' });
+      }
+
+      // Extract the properties for the specified category
+      const properties = item.properties;
+
+      res.json(properties);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
+    });
+});
+
 // define a route to get all data
 app.get('/data', (req, res) => {
 
