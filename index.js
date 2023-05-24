@@ -109,6 +109,44 @@ app.get('/data', (req, res) => {
       res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
     });
 });
+// define a route to update  data
+app.put('/data/:id/:category', (req, res) => {
+  const id = req.params.id;
+  const category = req.params.category;
+
+  // Find the Data document by uniqueId
+  Data.findOne({ uniqueId: id })
+    .then((data) => {
+      if (!data) {
+        return res.status(404).json({ message: 'Data not found' });
+      }
+
+      // Find the item with the specified category
+      const item = data.items.find((item) => item.category === category);
+
+      if (!item) {
+        return res.status(404).json({ message: 'Category not found' });
+      }
+
+      // Update the properties for the specified category
+      item.properties = req.body.properties; // Assuming the updated properties are sent in the request body
+
+      // Save the updated data
+      data.save()
+        .then(() => {
+          res.json({ message: 'Data updated successfully' });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ message: 'Failed to update data in MongoDB' });
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to retrieve data from MongoDB' });
+    });
+});
+
 //delete all the entry
 app.delete('/api/data', (req, res) => {
   Data.deleteMany({})
