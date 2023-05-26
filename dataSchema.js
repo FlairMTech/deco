@@ -8,6 +8,7 @@ const categorySchema = new mongoose.Schema({
   address: String,
   date: String,
   name: String,
+   title: String,
   items: [
     {
       category: String,
